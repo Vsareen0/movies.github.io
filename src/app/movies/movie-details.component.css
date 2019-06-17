@@ -1,0 +1,16 @@
+#image-body{
+  margin-top: -250px;
+  z-index: 1;
+  opacity: .8;
+  background-color: black;
+}
+
+#image-body p{
+  padding: 1.2em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#title-description{
+  padding: .8em;
+  display: inline-flex;
+}

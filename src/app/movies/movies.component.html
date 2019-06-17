@@ -1,0 +1,106 @@
+<div class="navbar bg-dark">
+    <h4>Movies Application</h4>
+</div>
+
+<div class="row">
+
+  <div class=col-md-10 id="view_type">
+    &nbsp;&nbsp;View as:
+    <img src="../../assets/images/vertical-list.png"
+          title="Vertical List"
+          (click)='toggleOrientation(true)'>
+
+    <img src="../../assets/images/horizontal-list.png"
+          title="Horizontal List"
+          (click)='toggleOrientation(false)'>
+
+    <br>
+    <br>
+
+    <button class="btn btn-primary"
+            (click)='toggleImage()'
+            *ngIf='orientation'>
+      {{ showImage ? 'Hide' : 'Show' }} Image
+    </button>
+  </div>
+
+  <div class="col-md-2">
+  <div class="form-group">
+    Filter By:
+    <select class="form-control"
+            name="categoryFilter"
+            [ngModel]="categoryFilter"
+            (ngModelChange)="changeMovieFilter($event)">
+      <option *ngFor="let category of categoryFilter">
+          {{ category }}
+      </option>
+    </select>
+  </div>
+  <div>
+
+  </div>
+</div>
+</div>
+
+
+<div class="table-responsive" *ngIf='listType && movieDetails && orientation'>
+<table class='table table-dark table-hover'>
+    <tr>
+        <th>Posters</th>
+        <th>Title</th>
+        <th>Vote Average </th>
+        <th>Release Date</th>
+        <th>Details</th>
+    </tr>
+    <tr *ngFor="let movies of filteredMovies.results">
+      <td>
+        <img *ngIf='showImage && movies.poster_path'
+               src="{{ IMAGES_URL + movies.poster_path }}">
+         <span *ngIf='!showImage'> {{ movies.poster_path }} </span>
+      </td>
+      <td>{{ movies.title }} <br> {{ movies.tagline }}
+        <br/>
+        <span *ngIf='showImage && movies.tagline'> {{ movies.tagline }} </span>
+      </td>
+      <td>
+        <app-star [rating]='movies.vote_average'></app-star>
+      </td>
+      <td>{{ movies.release_date }}</td>
+      <td><button type="button"
+                  class="btn btn-outline-success"
+                  [routerLink]="['/movies', movies.id]"
+                  (click)=toggleMovieDetails()>
+                  View More
+            </button>
+      </td>
+    </tr>
+
+</table>
+</div>
+
+<div class="cdk-virtual-scroll-data-source-example" *ngIf='!orientation'>
+  <cdk-virtual-scroll-viewport orientation="horizontal" itemSize="1200" class="example-viewport">
+    <div *ngFor="let movie of filteredMovies.results" class="example-item">
+      <div class="movieBox" >
+         <img  src="{{ IMAGES_URL_2 + movie.poster_path }}">
+      </div>
+      <div id="movieBoxDetails" text-align="center">
+        <a class="btn btn-outline-success"
+           href="#"
+           [routerLink]="['/movies', movie.id]">View More</a>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>
+
+<div class="table-responsive">
+    <div class="col-sm-4" *ngIf='!movieDetails'>
+        <a type="button" class="btn btn-success" href='http://localhost:4200'>Go Back</a>
+    </div>
+    <table class='table table-dark table-hover'>
+      <tr>
+      <router-outlet></router-outlet>
+    </tr>
+  </table>
+</div>
+
